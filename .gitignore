@@ -2,3 +2,4 @@ build/
 *.o
 server
 server.log
+dumb_client/
