@@ -4,19 +4,20 @@ project(timp_server)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include_directories(include)
+include_directories(${Boost_INCLUDE_DIRS})
+
 find_package(Boost REQUIRED COMPONENTS program_options)
 find_package(CryptoPP REQUIRED)
 
-include_directories(${Boost_INCLUDE_DIRS})
-
 add_executable(server
-    main.cpp
-    Server.cpp
-    ClientDB.cpp
-    Authenticator.cpp
-    VectorProcessor.cpp
-    Logger.cpp
-    UserInterface.cpp
+    src/main.cpp
+    src/Server.cpp
+    src/ClientDB.cpp
+    src/Authenticator.cpp
+    src/VectorProcessor.cpp
+    src/Logger.cpp
+    src/UserInterface.cpp
 )
 
 target_link_libraries(server PRIVATE 
