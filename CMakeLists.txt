@@ -4,11 +4,13 @@ project(timp_server)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include_directories(include)
+find_package(Boost REQUIRED COMPONENTS program_options)
 include_directories(${Boost_INCLUDE_DIRS})
 
-find_package(Boost REQUIRED COMPONENTS program_options)
-find_package(CryptoPP REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(CRYPTOPP REQUIRED IMPORTED_TARGET libcrypto++)
+
+include_directories(include)
 
 add_executable(server
     src/main.cpp
@@ -22,5 +24,5 @@ add_executable(server
 
 target_link_libraries(server PRIVATE 
     ${Boost_LIBRARIES} 
-    ${CRYPTOPP_LIBRARIES}
+    PkgConfig::CRYPTOPP
 )

@@ -5,7 +5,9 @@
 
 Logger::Logger(const std::string& filename) {
     logFile.open(filename, std::ios::app);
-    if (!logFile.is_open()) throw std::runtime_error("Cannot open log file");
+    if (!logFile.is_open()) {
+        std::cerr << "Warning: Cannot open log file " << filename << ". Logging to console." << std::endl;
+    }
 }
 
 Logger::~Logger() { if (logFile.is_open()) logFile.close(); }
@@ -17,7 +19,13 @@ void Logger::log(const std::string& message, int severity) {
     strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", localtime(&now));
     
     std::string sevStr = (severity == 2) ? "CRITICAL" : (severity == 1 ? "WARNING" : "INFO");
-    logFile << buf << " [" << sevStr << "] " << message << std::endl;
+    std::string logLine = std::string(buf) + " [" + sevStr + "] " + message;
+    
+    if (logFile.is_open()) {
+        logFile << logLine << std::endl;
+    } else {
+        std::cerr << logLine << std::endl;
+    }
     
     if (severity == 2) {
         std::cerr << "Critical error: " << message << std::endl;

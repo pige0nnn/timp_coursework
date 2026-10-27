@@ -8,9 +8,21 @@ void ClientDB::load(const std::string& filename) {
     
     std::string line;
     while (std::getline(file, line)) {
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+        
         size_t pos = line.find(':');
         if (pos != std::string::npos) {
-            users[line.substr(0, pos)] = line.substr(pos + 1);
+            std::string login = line.substr(0, pos);
+            std::string password = line.substr(pos + 1);
+            
+            while (!password.empty() && (password.back() == ' ' || password.back() == '\t')) password.pop_back();
+            while (!login.empty() && (login.back() == ' ' || login.back() == '\t')) login.pop_back();
+            
+            if (!login.empty()) {
+                users[login] = password;
+            }
         }
     }
 }

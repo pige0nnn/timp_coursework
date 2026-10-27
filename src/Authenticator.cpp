@@ -2,6 +2,8 @@
 #include <cryptopp/sha.h>
 #include <cryptopp/hex.h>
 #include <cryptopp/filters.h>
+#include <algorithm>
+#include <cctype>
 
 std::string Authenticator::computeSHA224Hash(const std::string& salt16, const std::string& password) {
     CryptoPP::SHA224 hash;
@@ -16,5 +18,15 @@ std::string Authenticator::computeSHA224Hash(const std::string& salt16, const st
 }
 
 bool Authenticator::verifyHash(const std::string& salt16, const std::string& password, const std::string& storedHash) {
-    return computeSHA224Hash(salt16, password) == storedHash;
+    std::string computedHash = computeSHA224Hash(salt16, password);
+    
+    std::string lowerStored = storedHash;
+    std::transform(lowerStored.begin(), lowerStored.end(), lowerStored.begin(), 
+                   [](unsigned char c){ return std::tolower(c); });
+    
+    std::string lowerComputed = computedHash;
+    std::transform(lowerComputed.begin(), lowerComputed.end(), lowerComputed.begin(), 
+                   [](unsigned char c){ return std::tolower(c); });
+    
+    return lowerStored == lowerComputed;
 }

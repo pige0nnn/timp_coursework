@@ -5,8 +5,9 @@
 #include <cstring>
 #include <iostream>
 #include <vector>
+#include <string>
 
-Server::Server() : port(33333), serverSocket(-1), logger("server.log") {}
+Server::Server() : port(33333), serverSocket(-1), logger("/var/log/vcalc.log") {}
 
 void Server::start(int argc, const char** argv) {
     UserInterface ui;
@@ -58,11 +59,15 @@ void Server::start(int argc, const char** argv) {
 }
 
 void Server::handleClient(int clientSocket) {
-    uint32_t len = 0;
-    if (recv(clientSocket, &len, sizeof(len), MSG_WAITALL) != sizeof(len)) return;
-    
-    std::string msg(len, '\0');
-    if (recv(clientSocket, &msg[0], len, MSG_WAITALL) != (ssize_t)len) return;
+    char buffer[4096];
+    ssize_t bytesRead = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
+    if (bytesRead <= 0) return;
+    buffer[bytesRead] = '\0';
+    std::string msg(buffer);
+
+    while (!msg.empty() && (msg.back() == '\n' || msg.back() == '\r' || msg.back() == ' ')) {
+        msg.pop_back();
+    }
 
     if (msg.length() < 16 + 56) {
         send(clientSocket, "ERR", 3, 0);
@@ -85,8 +90,6 @@ void Server::handleClient(int clientSocket) {
 
     uint32_t n = 0;
     if (recv(clientSocket, &n, sizeof(n), MSG_WAITALL) != sizeof(n)) return;
-
-    send(clientSocket, &n, sizeof(n), 0);
 
     for (uint32_t i = 0; i < n; ++i) {
         uint32_t s = 0;
