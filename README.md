@@ -26,8 +26,25 @@
 *   **Crypto++** (для хеш-функции SHA-224)
 *   **pkg-config** (для поиска библиотеки Crypto++ в CMake)
 
+## Модульное тестирование
+
+В проекте реализованы модульные тесты с использованием фреймворка **UnitTest++**. 
+Тесты покрывают основные модули:
+*   `ClientDB` (загрузка базы и поиск пользователей)
+*   `Authenticator` (хеширование SHA-224)
+*   `VectorProcessor` (вычисление произведения векторов)
+*   `UserInterface` (парсинг аргументов командной строки)
+*   `Logger` (запись в журнал)
+
+### Установка UnitTest++
+Для сборки тестов необходимо установить библиотеку:
+```bash
+sudo apt install libunittest++-dev
+```
+
 ### Установка зависимостей (Ubuntu/Debian)
 
 ```bash
 sudo apt update
 sudo apt install build-essential cmake pkg-config libboost-program-options-dev libcrypto++-dev
+```
