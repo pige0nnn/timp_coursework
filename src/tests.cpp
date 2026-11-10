@@ -38,7 +38,7 @@ SUITE(ClientDBTest) {
 SUITE(AuthenticatorTest) {
     const std::string SALT = "AF95CC0F68EA56A3";
     const std::string PASS = "P@ssW0rd";
-    const std::string HASH = "a18bebc2104544c09833b986e09d7cb299ccaba7bad0419d6365027a3";
+    const std::string HASH = "18bebc2104544c09833b986e09d7cb299ccaba7bad0419d6365027a3";
 
     TEST(ComputeHash) {
         std::string computed = Authenticator::computeSHA224Hash(SALT, PASS);

@@ -26,3 +26,25 @@ target_link_libraries(server PRIVATE
     ${Boost_LIBRARIES} 
     PkgConfig::CRYPTOPP
 )
+
+# Сборка тестов
+# Поиск библиотеки UnitTest++
+find_library(UNITTEST_LIB UnitTest++)
+if(NOT UNITTEST_LIB)
+    message(FATAL_ERROR "UnitTest++ not found! Install it via: sudo apt install libunittest++-dev")
+endif()
+
+add_executable(tests
+    src/tests.cpp
+    src/ClientDB.cpp
+    src/Authenticator.cpp
+    src/VectorProcessor.cpp
+    src/UserInterface.cpp
+    src/Logger.cpp
+)
+
+target_link_libraries(tests PRIVATE 
+    PkgConfig::CRYPTOPP 
+    ${Boost_LIBRARIES}
+    ${UNITTEST_LIB}
+)
