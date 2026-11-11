@@ -48,9 +48,8 @@ sudo apt install libunittest++-dev
 sudo apt update
 sudo apt install build-essential cmake pkg-config libboost-program-options-dev libcrypto++-dev
 ```
-### Запуск тестов (пошагово)
+### Запуск тестов
 
-Скопируйте и выполните следующие команды в терминале:
 
 ```bash
 # 1. Перейдите в корень проекта
