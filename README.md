@@ -48,3 +48,20 @@ sudo apt install libunittest++-dev
 sudo apt update
 sudo apt install build-essential cmake pkg-config libboost-program-options-dev libcrypto++-dev
 ```
+### Запуск тестов (пошагово)
+
+Скопируйте и выполните следующие команды в терминале:
+
+```bash
+# 1. Перейдите в корень проекта
+cd timp_coursework
+
+# 2. Создайте папку сборки и перейдите в неё
+mkdir -p build && cd build
+
+# 3. Соберите проект и тесты
+cmake ..
+make
+
+# 4. Запустите тесты
+./tests
